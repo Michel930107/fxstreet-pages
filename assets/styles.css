@@ -258,7 +258,6 @@ tbody tr:hover { background: var(--soft); }
 .test-parameters label { margin: 0; }
 .test-parameters input { width: 100%; height: 36px; margin-top: 5px; padding: 0 9px; border: 1px solid var(--line); border-radius: 4px; color: var(--text); background: var(--white); font-size: 13px; font-weight: 400; outline: none; }
 .test-parameters input:focus { border-color: var(--text); box-shadow: 0 0 0 1px var(--text); }
-.test-parameters input[readonly] { color: var(--muted); background: var(--soft); cursor: not-allowed; }
 .test-dialog textarea { width: 100%; padding: 9px; border: 1px solid var(--line); border-radius: 4px; color: var(--text); background: var(--white); font-family: Consolas, "Liberation Mono", monospace; font-size: 11px; line-height: 1.45; resize: vertical; }
 .test-dialog textarea:focus { border-color: var(--text); outline: 1px solid var(--text); }
 .test-dialog .dialog-error { color: var(--danger); }

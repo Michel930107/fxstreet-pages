@@ -104,7 +104,7 @@ function buildTestTarget(symbol) {
   if (!isUsd) warnings.push(`La moneda ${symbol.currency || "—"} no tiene una regla definida. Revisa testType si deseas utilizarlo.`);
 
   const parameters = {
-    asset: "testMode",
+    asset: "",
     testProviderCode: providerCode,
     sessiontest: session,
     testType,
@@ -128,7 +128,10 @@ function showTestDialog(target) {
     item.textContent = warning;
     return item;
   }));
-  ui.testWarnings.hidden = target.warnings.length === 0;
+  const assetWarning = document.createElement("li");
+  assetWarning.textContent = "Escribe testMode manualmente para habilitar la prueba.";
+  ui.testWarnings.prepend(assetWarning);
+  ui.testWarnings.hidden = false;
   ui.testAsset.value = target.parameters.asset;
   ui.testProviderCode.value = target.parameters.testProviderCode;
   ui.testSession.value = target.parameters.sessiontest;
