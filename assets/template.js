@@ -97,11 +97,11 @@ function buildTestTarget(symbol) {
   const fullDay = symbol.tradingTimeStart?.slice(0, 5) === "00:00"
     && symbol.tradingTimeEnd?.slice(0, 5) === "23:59";
   const session = fullDay ? "24x7" : "";
-  if (!fullDay) warnings.push(`El horario ${timeRange(symbol)} no corresponde a 24x7. Completa sessiontest.`);
+  if (!fullDay) warnings.push(`El horario ${timeRange(symbol)} no corresponde a 24x7. Revisa sessiontest si deseas utilizarlo.`);
 
   const isUsd = String(symbol.currency || "").toUpperCase() === "USD";
   const testType = isUsd ? "Forex" : "";
-  if (!isUsd) warnings.push(`La moneda ${symbol.currency || "—"} no tiene una regla definida. Completa testType.`);
+  if (!isUsd) warnings.push(`La moneda ${symbol.currency || "—"} no tiene una regla definida. Revisa testType si deseas utilizarlo.`);
 
   const parameters = {
     asset: "testMode",
