@@ -1,0 +1,10 @@
+[
+  {
+    "id": "usdinr",
+    "title": "USD/INR Symbols",
+    "description": "Símbolos spot USD/INR disponibles en los exchanges DX Forex.",
+    "category": "Currencies",
+    "query": "USDINR",
+    "source": "data/usdinr.xml"
+  }
+]

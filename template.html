@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Visor reutilizable de símbolos de mercado.">
+  <title>Dataset · FXStreet Data Pages</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <main class="page-shell">
+    <nav class="topbar" aria-label="Navegación">
+      <a class="back-link" href="index.html">← Volver al índice</a>
+      <a class="source-link" id="source-link" href="#" hidden>Ver XML original</a>
+    </nav>
+
+    <header class="dataset-head">
+      <div>
+        <p class="eyebrow" id="category">Dataset</p>
+        <h1 id="dataset-title">Cargando…</h1>
+        <p class="dataset-description" id="dataset-description">Leyendo el catálogo y los datos.</p>
+      </div>
+      <span class="pill" id="query-pill" hidden></span>
+    </header>
+
+    <div class="loading-card" id="loading" role="status">Procesando XML…</div>
+    <div class="loading-card status error" id="error" role="alert" hidden></div>
+
+    <section id="viewer" hidden>
+      <div class="kpi-grid" aria-label="Resumen del dataset">
+        <div class="kpi"><div class="kpi-value" id="kpi-total">0</div><div class="kpi-label">Símbolos</div></div>
+        <div class="kpi"><div class="kpi-value" id="kpi-exchanges">0</div><div class="kpi-label">Exchanges</div></div>
+        <div class="kpi"><div class="kpi-value" id="kpi-currencies">—</div><div class="kpi-label">Moneda</div></div>
+        <div class="kpi"><div class="kpi-value" id="kpi-hours">—</div><div class="kpi-label">Horario</div></div>
+      </div>
+
+      <form class="filters" id="filters" aria-label="Filtros">
+        <div class="field">
+          <label for="search">Buscar en todos los campos</label>
+          <input id="search" type="search" placeholder="Ticker, nombre, ID…" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="exchange-filter">Exchange</label>
+          <select id="exchange-filter"><option value="">Todos</option></select>
+        </div>
+        <div class="field">
+          <label for="type-filter">Tipo</label>
+          <select id="type-filter"><option value="">Todos</option></select>
+        </div>
+        <div class="field">
+          <label for="currency-filter">Moneda</label>
+          <select id="currency-filter"><option value="">Todas</option></select>
+        </div>
+        <button class="reset" type="reset">Limpiar</button>
+      </form>
+
+      <div class="table-shell">
+        <div class="table-meta">
+          <span id="result-count">0 resultados</span>
+          <span id="xml-status">errorNumber: —</span>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th data-key="tickerSymbol" tabindex="0">Ticker</th>
+                <th data-key="name" tabindex="0">Nombre</th>
+                <th data-key="uniqueName" tabindex="0">Nombre único</th>
+                <th data-key="stockExchangeName" tabindex="0">Exchange</th>
+                <th data-key="currency" tabindex="0">Moneda</th>
+                <th data-key="typeNameEng" tabindex="0">Tipo</th>
+                <th data-key="tradingTimeStart" tabindex="0">Horario</th>
+                <th data-key="id" tabindex="0">Symbol ID</th>
+              </tr>
+            </thead>
+            <tbody id="symbol-rows"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="assets/template.js" defer></script>
+</body>
+</html>
