@@ -16,7 +16,15 @@ const ui = {
   resultCount: document.querySelector("#result-count"),
   xmlStatus: document.querySelector("#xml-status"),
   summary: document.querySelector("#dataset-summary"),
+  testDialog: document.querySelector("#test-dialog"),
+  testDialogForm: document.querySelector("#test-dialog-form"),
+  testWarnings: document.querySelector("#test-warnings"),
+  testUrl: document.querySelector("#test-url"),
+  testDialogError: document.querySelector("#test-dialog-error"),
+  testCancel: document.querySelector("#test-cancel"),
 };
+
+const TEST_BASE_URL = "https://qa.fxstreet.com/rates-charts/chart-interactive";
 
 const state = {
   symbols: [],
@@ -64,6 +72,75 @@ function timeRange(symbol) {
   return `${start}–${end}`;
 }
 
+function buildTestTarget(symbol) {
+  const warnings = [];
+  const rawId = String(symbol.id || "");
+  const idMatch = rawId.match(/^tts-(\d+)$/i);
+  let providerCode = idMatch ? idMatch[1] : rawId.replace(/^tts-/i, "");
+
+  if (!idMatch) warnings.push("El Symbol ID no tiene el formato tts-<número> esperado.");
+  if (!/^\d+$/.test(providerCode)) {
+    providerCode = "";
+    warnings.push("No se pudo obtener un providerCodetest numérico.");
+  }
+
+  const fullDay = symbol.tradingTimeStart?.slice(0, 5) === "00:00"
+    && symbol.tradingTimeEnd?.slice(0, 5) === "23:59";
+  const session = fullDay ? "24x7" : "";
+  if (!fullDay) warnings.push(`El horario ${timeRange(symbol)} no corresponde a 24x7. Completa sessiontest.`);
+
+  const isUsd = String(symbol.currency || "").toUpperCase() === "USD";
+  const testType = isUsd ? "Forex" : "";
+  if (!isUsd) warnings.push(`La moneda ${symbol.currency || "—"} no tiene una regla definida. Completa testType.`);
+
+  const url = new URL(TEST_BASE_URL);
+  url.search = new URLSearchParams({
+    asset: "testMode",
+    providerCodetest: providerCode,
+    sessiontest: session,
+    testType,
+  }).toString();
+
+  return { url: url.href, warnings };
+}
+
+function openTestUrl(rawUrl) {
+  const url = new URL(rawUrl.trim());
+  const validTarget = url.protocol === "https:"
+    && url.hostname === "qa.fxstreet.com"
+    && url.pathname === "/rates-charts/chart-interactive";
+  if (!validTarget) throw new Error("La URL debe apuntar al chart interactivo de qa.fxstreet.com.");
+  window.open(url.href, "_blank", "noopener,noreferrer");
+}
+
+function showTestDialog(target) {
+  ui.testWarnings.replaceChildren(...target.warnings.map(warning => {
+    const item = document.createElement("li");
+    item.textContent = warning;
+    return item;
+  }));
+  ui.testUrl.value = target.url;
+  ui.testDialogError.hidden = true;
+  ui.testDialog.showModal();
+}
+
+function makeTestCell(symbol) {
+  const target = buildTestTarget(symbol);
+  const cell = document.createElement("td");
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "test-button";
+  button.textContent = "TEST";
+  button.dataset.testUrl = target.url;
+  button.dataset.requiresVerification = String(target.warnings.length > 0);
+  button.addEventListener("click", () => {
+    if (target.warnings.length) showTestDialog(target);
+    else openTestUrl(target.url);
+  });
+  cell.append(button);
+  return cell;
+}
+
 function makeCell(value, className = "") {
   const cell = document.createElement("td");
   cell.textContent = value || "—";
@@ -90,7 +167,8 @@ function makeRow(symbol) {
     makeCell(symbol.currency),
     makeCell(symbol.typeNameEng || symbol.typeName),
     makeCell(timeRange(symbol), "mono"),
-    makeCell(symbol.id, "mono")
+    makeCell(symbol.id, "mono"),
+    makeTestCell(symbol)
   );
   return row;
 }
@@ -124,7 +202,7 @@ function render() {
   if (!symbols.length) {
     const row = document.createElement("tr");
     const cell = document.createElement("td");
-    cell.colSpan = 8;
+    cell.colSpan = 9;
     cell.className = "empty";
     cell.textContent = "No hay símbolos que coincidan con los filtros.";
     row.append(cell);
@@ -165,6 +243,18 @@ function setupInteractions() {
       }
     });
   }
+
+  ui.testCancel.addEventListener("click", () => ui.testDialog.close());
+  ui.testDialogForm.addEventListener("submit", event => {
+    event.preventDefault();
+    try {
+      openTestUrl(ui.testUrl.value);
+      ui.testDialog.close();
+    } catch (error) {
+      ui.testDialogError.textContent = error.message;
+      ui.testDialogError.hidden = false;
+    }
+  });
 }
 
 function setSummary(symbols) {

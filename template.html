@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Visor de símbolos TeleTrader vinculados a un asset.">
   <title>Dataset · TTS Symbols Guide</title>
-  <link rel="stylesheet" href="assets/styles.css?v=20260824-2">
+  <link rel="stylesheet" href="assets/styles.css?v=20260824-3">
 </head>
 <body>
   <main class="page-shell">
@@ -64,6 +64,7 @@
                 <th data-key="typeNameEng" tabindex="0">Tipo</th>
                 <th data-key="tradingTimeStart" tabindex="0">Horario</th>
                 <th data-key="id" tabindex="0">Symbol ID</th>
+                <th>TEST</th>
               </tr>
             </thead>
             <tbody id="symbol-rows"></tbody>
@@ -73,6 +74,21 @@
     </section>
   </main>
 
-  <script src="assets/template.js?v=20260824-2" defer></script>
+  <dialog class="test-dialog" id="test-dialog" aria-labelledby="test-dialog-title">
+    <form class="test-dialog-card" id="test-dialog-form" method="dialog">
+      <h2 id="test-dialog-title">Verificar URL de TEST</h2>
+      <p>Revisa los valores antes de continuar:</p>
+      <ul id="test-warnings"></ul>
+      <label for="test-url">URL</label>
+      <textarea id="test-url" rows="5" spellcheck="false"></textarea>
+      <p class="dialog-error" id="test-dialog-error" role="alert" hidden></p>
+      <div class="dialog-actions">
+        <button type="button" id="test-cancel">Cancelar</button>
+        <button type="submit" class="primary">Abrir TEST</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="assets/template.js?v=20260824-3" defer></script>
 </body>
 </html>
