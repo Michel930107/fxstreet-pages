@@ -253,6 +253,10 @@ tbody tr:hover { background: var(--soft); }
 .test-dialog p { margin: 8px 0; color: var(--muted); font-size: 13px; }
 .test-dialog ul { margin: 8px 0 16px; padding-left: 20px; color: var(--text); font-size: 13px; line-height: 1.5; }
 .test-dialog label { display: block; margin-bottom: 5px; color: var(--muted); font-size: 11px; font-weight: 600; }
+.test-parameters { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0; }
+.test-parameters label { margin: 0; }
+.test-parameters input { width: 100%; height: 36px; margin-top: 5px; padding: 0 9px; border: 1px solid var(--line); border-radius: 4px; color: var(--text); background: var(--white); font-size: 13px; font-weight: 400; outline: none; }
+.test-parameters input:focus { border-color: var(--text); box-shadow: 0 0 0 1px var(--text); }
 .test-dialog textarea { width: 100%; padding: 9px; border: 1px solid var(--line); border-radius: 4px; color: var(--text); background: var(--white); font-family: Consolas, "Liberation Mono", monospace; font-size: 11px; line-height: 1.45; resize: vertical; }
 .test-dialog textarea:focus { border-color: var(--text); outline: 1px solid var(--text); }
 .test-dialog .dialog-error { color: var(--danger); }
@@ -272,4 +276,5 @@ tbody tr:hover { background: var(--soft); }
   .page-shell { width: min(100% - 18px, 1180px); }
   .filters { grid-template-columns: 1fr; }
   .filters .field:first-child { grid-column: auto; }
+  .test-parameters { grid-template-columns: 1fr; }
 }

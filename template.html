@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Visor de símbolos TeleTrader vinculados a un asset.">
   <title>Dataset · TTS Symbols Guide</title>
-  <link rel="stylesheet" href="assets/styles.css?v=20260824-3">
+  <link rel="stylesheet" href="assets/styles.css?v=20260824-4">
 </head>
 <body>
   <main class="page-shell">
@@ -77,10 +77,24 @@
   <dialog class="test-dialog" id="test-dialog" aria-labelledby="test-dialog-title">
     <form class="test-dialog-card" id="test-dialog-form" method="dialog">
       <h2 id="test-dialog-title">Verificar URL de TEST</h2>
-      <p>Revisa los valores antes de continuar:</p>
+      <p>Revisa o modifica los parámetros antes de continuar.</p>
       <ul id="test-warnings"></ul>
-      <label for="test-url">URL</label>
-      <textarea id="test-url" rows="5" spellcheck="false"></textarea>
+      <div class="test-parameters">
+        <label for="test-asset">asset
+          <input id="test-asset" name="asset" type="text" autocomplete="off">
+        </label>
+        <label for="test-provider-code">testProviderCode
+          <input id="test-provider-code" name="testProviderCode" type="text" inputmode="numeric" autocomplete="off">
+        </label>
+        <label for="test-session">sessiontest
+          <input id="test-session" name="sessiontest" type="text" autocomplete="off">
+        </label>
+        <label for="test-type">testType
+          <input id="test-type" name="testType" type="text" autocomplete="off">
+        </label>
+      </div>
+      <label for="test-url">URL resultante</label>
+      <textarea id="test-url" rows="4" readonly spellcheck="false"></textarea>
       <p class="dialog-error" id="test-dialog-error" role="alert" hidden></p>
       <div class="dialog-actions">
         <button type="button" id="test-cancel">Cancelar</button>
@@ -89,6 +103,6 @@
     </form>
   </dialog>
 
-  <script src="assets/template.js?v=20260824-3" defer></script>
+  <script src="assets/template.js?v=20260824-4" defer></script>
 </body>
 </html>

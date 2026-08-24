@@ -19,6 +19,10 @@ const ui = {
   testDialog: document.querySelector("#test-dialog"),
   testDialogForm: document.querySelector("#test-dialog-form"),
   testWarnings: document.querySelector("#test-warnings"),
+  testAsset: document.querySelector("#test-asset"),
+  testProviderCode: document.querySelector("#test-provider-code"),
+  testSession: document.querySelector("#test-session"),
+  testType: document.querySelector("#test-type"),
   testUrl: document.querySelector("#test-url"),
   testDialogError: document.querySelector("#test-dialog-error"),
   testCancel: document.querySelector("#test-cancel"),
@@ -72,6 +76,12 @@ function timeRange(symbol) {
   return `${start}–${end}`;
 }
 
+function makeTestUrl(parameters) {
+  const url = new URL(TEST_BASE_URL);
+  url.search = new URLSearchParams(parameters).toString();
+  return url.href;
+}
+
 function buildTestTarget(symbol) {
   const warnings = [];
   const rawId = String(symbol.id || "");
@@ -81,7 +91,7 @@ function buildTestTarget(symbol) {
   if (!idMatch) warnings.push("El Symbol ID no tiene el formato tts-<número> esperado.");
   if (!/^\d+$/.test(providerCode)) {
     providerCode = "";
-    warnings.push("No se pudo obtener un providerCodetest numérico.");
+    warnings.push("No se pudo obtener un testProviderCode numérico.");
   }
 
   const fullDay = symbol.tradingTimeStart?.slice(0, 5) === "00:00"
@@ -93,15 +103,14 @@ function buildTestTarget(symbol) {
   const testType = isUsd ? "Forex" : "";
   if (!isUsd) warnings.push(`La moneda ${symbol.currency || "—"} no tiene una regla definida. Completa testType.`);
 
-  const url = new URL(TEST_BASE_URL);
-  url.search = new URLSearchParams({
+  const parameters = {
     asset: "testMode",
-    providerCodetest: providerCode,
+    testProviderCode: providerCode,
     sessiontest: session,
     testType,
-  }).toString();
+  };
 
-  return { url: url.href, warnings };
+  return { url: makeTestUrl(parameters), parameters, warnings };
 }
 
 function openTestUrl(rawUrl) {
@@ -119,9 +128,23 @@ function showTestDialog(target) {
     item.textContent = warning;
     return item;
   }));
-  ui.testUrl.value = target.url;
+  ui.testWarnings.hidden = target.warnings.length === 0;
+  ui.testAsset.value = target.parameters.asset;
+  ui.testProviderCode.value = target.parameters.testProviderCode;
+  ui.testSession.value = target.parameters.sessiontest;
+  ui.testType.value = target.parameters.testType;
+  updateTestUrlPreview();
   ui.testDialogError.hidden = true;
   ui.testDialog.showModal();
+}
+
+function updateTestUrlPreview() {
+  ui.testUrl.value = makeTestUrl({
+    asset: ui.testAsset.value.trim(),
+    testProviderCode: ui.testProviderCode.value.trim(),
+    sessiontest: ui.testSession.value.trim(),
+    testType: ui.testType.value.trim(),
+  });
 }
 
 function makeTestCell(symbol) {
@@ -133,10 +156,7 @@ function makeTestCell(symbol) {
   button.textContent = "TEST";
   button.dataset.testUrl = target.url;
   button.dataset.requiresVerification = String(target.warnings.length > 0);
-  button.addEventListener("click", () => {
-    if (target.warnings.length) showTestDialog(target);
-    else openTestUrl(target.url);
-  });
+  button.addEventListener("click", () => showTestDialog(target));
   cell.append(button);
   return cell;
 }
@@ -245,6 +265,7 @@ function setupInteractions() {
   }
 
   ui.testCancel.addEventListener("click", () => ui.testDialog.close());
+  ui.testDialogForm.addEventListener("input", updateTestUrlPreview);
   ui.testDialogForm.addEventListener("submit", event => {
     event.preventDefault();
     try {
