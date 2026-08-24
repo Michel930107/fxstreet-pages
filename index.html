@@ -5,23 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Catálogo de símbolos TTS.">
   <title>TTS Symbols Guide</title>
-  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/styles.css?v=20260824-2">
 </head>
 <body>
   <main class="shell">
     <header class="site-header">
       <h1>TTS Symbols Guide</h1>
-      <span class="pill" id="page-count">Cargando…</span>
     </header>
 
     <section aria-labelledby="pages-title">
       <h2 class="visually-hidden" id="pages-title">Páginas disponibles</h2>
 
-      <div class="catalog-grid" id="catalog" aria-live="polite"></div>
+      <div class="catalog-list" id="catalog" aria-live="polite"></div>
       <p class="status" id="catalog-status">Leyendo catálogo…</p>
     </section>
+
+    <details class="howto">
+      <summary>Añadir un nuevo XML</summary>
+      <ol>
+        <li><a href="https://github.com/Michel930107/fxstreet-pages/upload/main/data">Sube el XML</a> a la carpeta <code>data/</code>.</li>
+        <li><a href="https://github.com/Michel930107/fxstreet-pages/edit/main/data/pages.json">Edita <code>pages.json</code></a> y añade una entrada como esta:</li>
+      </ol>
+      <pre><code>{
+  "id": "eurusd",
+  "title": "EUR/USD",
+  "description": "Símbolos TeleTrader vinculados a este asset.",
+  "category": "Asset",
+  "query": "EURUSD",
+  "source": "data/eurusd.xml"
+}</code></pre>
+      <p>Guarda los cambios. El índice y la plantilla se actualizarán automáticamente.</p>
+    </details>
   </main>
 
-  <script src="assets/index.js" defer></script>
+  <script src="assets/index.js?v=20260824-2" defer></script>
 </body>
 </html>

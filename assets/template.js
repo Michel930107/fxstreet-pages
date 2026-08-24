@@ -3,8 +3,6 @@
 const ui = {
   title: document.querySelector("#dataset-title"),
   description: document.querySelector("#dataset-description"),
-  category: document.querySelector("#category"),
-  queryPill: document.querySelector("#query-pill"),
   sourceLink: document.querySelector("#source-link"),
   loading: document.querySelector("#loading"),
   error: document.querySelector("#error"),
@@ -17,10 +15,7 @@ const ui = {
   rows: document.querySelector("#symbol-rows"),
   resultCount: document.querySelector("#result-count"),
   xmlStatus: document.querySelector("#xml-status"),
-  total: document.querySelector("#kpi-total"),
-  exchanges: document.querySelector("#kpi-exchanges"),
-  currencies: document.querySelector("#kpi-currencies"),
-  hours: document.querySelector("#kpi-hours"),
+  summary: document.querySelector("#dataset-summary"),
 };
 
 const state = {
@@ -176,11 +171,9 @@ function setSummary(symbols) {
   const exchanges = uniqueValues("stockExchangeName");
   const currencies = uniqueValues("currency");
   const hours = [...new Set(symbols.map(timeRange))];
-
-  ui.total.textContent = symbols.length;
-  ui.exchanges.textContent = exchanges.length;
-  ui.currencies.textContent = currencies.join(", ") || "—";
-  ui.hours.textContent = hours.length === 1 ? hours[0] : `${hours.length} horarios`;
+  const currencyText = currencies.join(", ") || "—";
+  const hoursText = hours.length === 1 ? hours[0] : `${hours.length} horarios`;
+  ui.summary.textContent = `${symbols.length} TTS Symbols · ${exchanges.length} exchanges · ${currencyText} · ${hoursText}`;
 }
 
 async function getJson(url) {
@@ -203,12 +196,7 @@ async function loadDataset() {
 
     ui.title.textContent = page.title;
     ui.description.textContent = page.description || "";
-    ui.category.textContent = page.category || "Dataset";
     document.title = `${page.title} · TTS Symbols Guide`;
-    if (page.query) {
-      ui.queryPill.textContent = `search: ${page.query}`;
-      ui.queryPill.hidden = false;
-    }
     ui.sourceLink.href = page.source;
     ui.sourceLink.hidden = false;
 
