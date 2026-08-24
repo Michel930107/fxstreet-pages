@@ -1,9 +1,9 @@
 [
   {
     "id": "usdinr",
-    "title": "USD/INR Symbols",
-    "description": "Símbolos spot USD/INR disponibles en los exchanges DX Forex.",
-    "category": "Currencies",
+    "title": "USD/INR",
+    "description": "Símbolos TeleTrader disponibles vinculados a este asset.",
+    "category": "Asset",
     "query": "USDINR",
     "source": "data/usdinr.xml"
   }

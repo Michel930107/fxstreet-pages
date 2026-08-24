@@ -1,6 +1,6 @@
-# FXStreet Data Pages
+# TTS Symbols Guide
 
-Catálogo de datasets XML servido por GitHub Pages con una sola plantilla reutilizable.
+Catálogo de respuestas XML de TeleTrader con los símbolos disponibles vinculados a cada asset, servido por GitHub Pages con una sola plantilla reutilizable.
 
 ## Estructura
 

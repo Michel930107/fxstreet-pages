@@ -3,32 +3,23 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Catálogo de páginas de datos de mercado.">
-  <title>FXStreet Data Pages</title>
+  <meta name="description" content="Catálogo de símbolos TTS.">
+  <title>TTS Symbols Guide</title>
   <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
   <main class="shell">
-    <header class="hero">
-      <p class="eyebrow">Market data library</p>
-      <h1>FXStreet Data Pages</h1>
-      <p class="lede">Una colección de datasets de mercado presentados con una plantilla única, filtros y ordenación.</p>
+    <header class="site-header">
+      <h1>TTS Symbols Guide</h1>
+      <span class="pill" id="page-count">Cargando…</span>
     </header>
 
     <section aria-labelledby="pages-title">
-      <div class="section-head">
-        <div>
-          <p class="section-kicker">Catálogo</p>
-          <h2 id="pages-title">Páginas disponibles</h2>
-        </div>
-        <span class="pill" id="page-count">Cargando…</span>
-      </div>
+      <h2 class="visually-hidden" id="pages-title">Páginas disponibles</h2>
 
       <div class="catalog-grid" id="catalog" aria-live="polite"></div>
       <p class="status" id="catalog-status">Leyendo catálogo…</p>
     </section>
-
-    <footer>Para añadir otra página solo hay que incorporar su XML al catálogo.</footer>
   </main>
 
   <script src="assets/index.js" defer></script>

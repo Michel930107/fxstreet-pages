@@ -204,7 +204,7 @@ async function loadDataset() {
     ui.title.textContent = page.title;
     ui.description.textContent = page.description || "";
     ui.category.textContent = page.category || "Dataset";
-    document.title = `${page.title} · FXStreet Data Pages`;
+    document.title = `${page.title} · TTS Symbols Guide`;
     if (page.query) {
       ui.queryPill.textContent = `search: ${page.query}`;
       ui.queryPill.hidden = false;
