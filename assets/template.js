@@ -128,10 +128,7 @@ function showTestDialog(target) {
     item.textContent = warning;
     return item;
   }));
-  const assetWarning = document.createElement("li");
-  assetWarning.textContent = "Escribe testMode manualmente para habilitar la prueba.";
-  ui.testWarnings.prepend(assetWarning);
-  ui.testWarnings.hidden = false;
+  ui.testWarnings.hidden = target.warnings.length === 0;
   ui.testAsset.value = target.parameters.asset;
   ui.testProviderCode.value = target.parameters.testProviderCode;
   ui.testSession.value = target.parameters.sessiontest;
