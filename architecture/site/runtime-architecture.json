@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "FXStreet Site — Runtime Architecture",
+    "quality_profile": "showcase",
+    "viewBox": [1300, 820]
+  },
+  "components": [
+    { "id": "browser", "type": "external", "label": "Visitor", "sublabel": "Web browser", "pos": [25, 350], "size": [155, 68] },
+    { "id": "cloudflare-edge", "type": "cloud", "label": "Cloudflare Worker", "sublabel": "Origin rewrite + edge cache", "tag": "workers/en|es", "pos": [210, 350], "size": [190, 68] },
+    { "id": "next-runtime", "type": "backend", "label": "Next.js 15 runtime", "sublabel": "Node.js 22 · standalone container", "tag": "Port 3000", "pos": [460, 350], "size": [210, 68] },
+    { "id": "middleware", "type": "security", "label": "Middleware", "sublabel": "Redirects, sitemaps and session cookie", "pos": [730, 150], "size": [220, 70] },
+    { "id": "app-router", "type": "frontend", "label": "App Router + RSC", "sublabel": "Pages, layout and next-intl i18n", "pos": [730, 350], "size": [220, 70] },
+    { "id": "api-trpc", "type": "backend", "label": "API routes + tRPC", "sublabel": "/api/v1/* · typed procedures", "pos": [730, 560], "size": [220, 70] },
+    { "id": "site-gateway", "type": "external", "label": "Site Gateway API", "sublabel": "v1/v2 API with service token", "pos": [1010, 350], "size": [215, 70] },
+    { "id": "turnstile", "type": "security", "label": "Cloudflare Turnstile", "sublabel": "Protects sensitive procedures", "pos": [1010, 560], "size": [215, 70] },
+    { "id": "signalr", "type": "external", "label": "SignalR push", "sublabel": "Real-time updates", "pos": [210, 560], "size": [190, 70] },
+    { "id": "app-insights", "type": "external", "label": "Azure Application Insights", "sublabel": "OpenTelemetry traces", "pos": [1050, 120], "size": [210, 70] },
+    { "id": "browser-services", "type": "external", "label": "Browser services", "sublabel": "Google Tag Manager · GPT · Clarity · OneSignal", "pos": [25, 700], "size": [260, 70] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Site application (Next.js container)", "wraps": ["next-runtime", "middleware", "app-router", "api-trpc"], "pad": 36 }
+  ],
+  "connections": [
+    { "id": "browser-edge", "from": "browser", "to": "cloudflare-edge", "label": "HTTPS", "variant": "emphasis" },
+    { "id": "edge-origin", "from": "cloudflare-edge", "to": "next-runtime", "label": "rewritten origin", "variant": "emphasis", "labelDy": 58 },
+    { "id": "render-request", "from": "next-runtime", "to": "app-router", "label": "SSR / RSC" },
+    { "id": "server-gateway", "from": "app-router", "to": "site-gateway", "label": "API with token", "labelDy": 60 },
+    { "id": "middleware-request", "from": "next-runtime", "to": "middleware", "label": "global processing", "fromSide": "top", "toSide": "left", "labelAt": [700, 280] },
+    { "id": "api-request", "from": "next-runtime", "to": "api-trpc", "label": "route handlers", "fromSide": "bottom", "toSide": "left", "labelAt": [700, 490] },
+    { "id": "api-turnstile", "from": "api-trpc", "to": "turnstile", "label": "token validation", "variant": "security", "labelDy": 60 },
+    { "id": "browser-signalr", "from": "browser", "to": "signalr", "label": "SignalR / WebSocket", "fromSide": "bottom", "toSide": "left", "variant": "dashed", "labelAt": [270, 480] },
+    { "id": "next-observability", "from": "next-runtime", "to": "app-insights", "label": "traces", "fromSide": "top", "toSide": "left", "variant": "dashed", "labelAt": [900, 280] },
+    { "id": "browser-services-sdk", "from": "browser", "to": "browser-services", "label": "client SDKs", "fromSide": "bottom", "toSide": "top", "variant": "dashed", "labelAt": [155, 670] }
+  ]
+}
