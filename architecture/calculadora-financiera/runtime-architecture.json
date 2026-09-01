@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Arquitectura runtime · Calculadora Financiera",
+    "output": "runtime-architecture.html",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/Michel930107/calculadora-financiera.git",
+      "revision": "43c33bae5c1d7b218377a28503f4c8782f7854b6"
+    }
+  },
+  "components": [
+    {
+      "id": "visitor",
+      "type": "external",
+      "label": "Persona usuaria",
+      "sublabel": "Navegador web",
+      "pos": [35, 325],
+      "size": [145, 64]
+    },
+    {
+      "id": "hosting",
+      "type": "cloud",
+      "label": "Firebase Hosting",
+      "sublabel": "dist · HTTPS · clean URLs",
+      "pos": [245, 325],
+      "size": [170, 64],
+      "sources": [{ "path": "firebase.json", "line": 6, "end_line": 8, "label": "Hosting" }]
+    },
+    {
+      "id": "react",
+      "type": "frontend",
+      "label": "React runtime",
+      "sublabel": "Vite monta la SPA",
+      "pos": [480, 325],
+      "size": [165, 64],
+      "sources": [{ "path": "src/main.jsx", "line": 30, "end_line": 37, "label": "Entrada React" }]
+    },
+    {
+      "id": "router",
+      "type": "frontend",
+      "label": "Router e i18n",
+      "sublabel": "Rutas /es y /en con carga lazy",
+      "pos": [710, 325],
+      "size": [190, 64],
+      "sources": [
+        { "path": "src/router/index.jsx", "line": 27, "end_line": 49, "label": "Carga diferida" },
+        { "path": "src/router/index.jsx", "line": 523, "end_line": 543, "label": "Router raíz" }
+      ]
+    },
+    {
+      "id": "calculators",
+      "type": "frontend",
+      "label": "Calculadoras",
+      "sublabel": "Motores y gráficos en cliente",
+      "pos": [980, 175],
+      "size": [195, 64],
+      "sources": [{ "path": "src/router/index.jsx", "line": 410, "end_line": 462, "label": "Rutas de cálculo" }]
+    },
+    {
+      "id": "editorial",
+      "type": "frontend",
+      "label": "Artículos y SEO",
+      "sublabel": "Contenido editorial localizado",
+      "pos": [980, 325],
+      "size": [195, 64],
+      "sources": [{ "path": "src/router/index.jsx", "line": 494, "end_line": 518, "label": "Rutas editoriales" }]
+    },
+    {
+      "id": "firebaseSdk",
+      "type": "cloud",
+      "label": "Firebase Web SDK",
+      "sublabel": "App, Firestore y Analytics",
+      "pos": [700, 500],
+      "size": [190, 64],
+      "sources": [{ "path": "src/firebase.js", "line": 1, "end_line": 22, "label": "Inicialización Firebase" }]
+    },
+    {
+      "id": "firestore",
+      "type": "database",
+      "label": "Cloud Firestore",
+      "sublabel": "Convenios, newsletter y logs",
+      "pos": [980, 500],
+      "size": [195, 64],
+      "sources": [
+        { "path": "src/services/collectiveAgreements.ts", "line": 55, "end_line": 88, "label": "Convenios" },
+        { "path": "src/pages/Newsletter/index.tsx", "line": 137, "end_line": 164, "label": "Newsletter" },
+        { "path": "src/services/logger.ts", "line": 18, "end_line": 30, "label": "Logs frontend" }
+      ]
+    },
+    {
+      "id": "analytics",
+      "type": "external",
+      "label": "Firebase Analytics",
+      "sublabel": "Eventos con consentimiento",
+      "pos": [430, 500],
+      "size": [190, 64],
+      "sources": [{ "path": "src/services/analytics.js", "line": 21, "end_line": 45, "label": "Consentimiento y eventos" }]
+    },
+    {
+      "id": "google",
+      "type": "external",
+      "label": "Google CMP y AdSense",
+      "sublabel": "Scripts condicionales por ruta",
+      "pos": [180, 500],
+      "size": [195, 64],
+      "sources": [
+        { "path": "index.html", "line": 87, "end_line": 104, "label": "Carga de scripts" },
+        { "path": "src/router/index.jsx", "line": 113, "end_line": 125, "label": "Control por ruta" }
+      ]
+    }
+  ],
+  "connections": [
+    { "id": "visitor-hosting", "from": "visitor", "to": "hosting", "label": "HTTPS", "variant": "emphasis" },
+    { "id": "hosting-react", "from": "hosting", "to": "react", "label": "Bundle estático", "labelAt": [448, 403] },
+    { "id": "react-router", "from": "react", "to": "router", "label": "Monta rutas" },
+    { "id": "router-calculators", "from": "router", "to": "calculators", "label": "Vistas lazy" },
+    { "id": "router-editorial", "from": "router", "to": "editorial", "label": "Artículo y metadatos", "labelAt": [940, 403] },
+    { "id": "react-firebase", "from": "react", "to": "firebaseSdk", "label": "SDK de cliente" },
+    { "id": "firebase-firestore", "from": "firebaseSdk", "to": "firestore", "label": "Lectura y escritura", "labelAt": [935, 578] },
+    { "id": "react-analytics", "from": "react", "to": "analytics", "label": "Pageviews y eventos", "variant": "dashed", "fromSide": "bottom", "toSide": "top", "labelAt": [525, 590] },
+    { "id": "react-google", "from": "react", "to": "google", "label": "Carga según consentimiento", "variant": "dashed", "fromSide": "bottom", "toSide": "top" }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Entrega y navegación",
+      "items": ["Firebase Hosting sirve el bundle de Vite desde dist.", "React Router carga las vistas por idioma y recupera una vez los chunks obsoletos."]
+    },
+    {
+      "dot": "emerald",
+      "title": "Datos de producto",
+      "items": ["Los cálculos se ejecutan en el navegador.", "Firestore aporta convenios publicados y persiste newsletter y errores de frontend."]
+    },
+    {
+      "dot": "violet",
+      "title": "Medición y consentimiento",
+      "items": ["Firebase Analytics se habilita o deshabilita desde la preferencia local.", "La plataforma de consentimiento y AdSense se cargan según la ruta."]
+    }
+  ]
+}
